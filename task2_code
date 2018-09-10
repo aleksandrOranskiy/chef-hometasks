@@ -1,0 +1,94 @@
+[student@EPBYMINW2695 task2]$ sudo knife environment show lab
+chef_type:           environment
+cookbook_versions:
+default_attributes:
+  nginx:
+    app_dest: html
+    port:     80
+    version:  1.12.1
+description:         The custom environment for test
+json_class:          Chef::Environment
+name:                lab
+override_attributes:
+
+
+knife node edit jboss_server
+
+{
+  "name": "jboss_server",
+  "chef_environment": "lab",
+  "normal": {
+    "tags": [
+
+    ]
+  },
+  "policy_name": null,
+  "policy_group": null,
+  "run_list": [
+    "role[jboss]"
+]
+
+}
+
+knife node edit nginx_server
+
+{
+  "name": "nginx_server",
+  "chef_environment": "lab",
+  "normal": {
+    "tags": [
+
+    ]
+  },
+  "policy_name": null,
+  "policy_group": null,
+  "run_list": [
+    "role[nginx]"
+]
+
+}
+
+knife role edit jboss
+
+{
+  "name": "jboss",
+  "description": "The role for jboss installation",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+
+  },
+  "override_attributes": {
+
+  },
+  "chef_type": "role",
+  "run_list": [
+    "recipe[java]",
+    "recipe[jboss]"
+  ],
+  "env_run_lists": {
+
+  }
+}
+
+knife role edit nginx
+
+{
+  "name": "nginx",
+  "description": "The role for nginx installation",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+
+  },
+  "override_attributes": {
+
+  },
+  "chef_type": "role",
+  "run_list": [
+    "recipe[nginx]"
+  ],
+  "env_run_lists": {
+
+  }
+}
+
+

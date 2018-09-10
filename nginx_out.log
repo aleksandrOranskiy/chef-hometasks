@@ -1,0 +1,86 @@
+Starting Chef Client, version 14.4.56[0m
+resolving cookbooks for run list: ["nginx"][0m
+Synchronizing Cookbooks:[0m
+  - nginx (0.1.0)[0m
+Installing Cookbook Gems:[0m
+Compiling Cookbooks...[0m
+Converging 6 resources[0m
+Recipe: nginx::default[0m
+  * remote_file[/tmp/nginx-1.12.1-1.el7.ngx.x86_64.rpm] action create_if_missing
+    [32m- create new file /tmp/nginx-1.12.1-1.el7.ngx.x86_64.rpm[0m
+    [32m- update content in file /tmp/nginx-1.12.1-1.el7.ngx.x86_64.rpm from none to 70b474[0m
+    [37m(new content is binary, diff output suppressed)[0m
+[0m  * yum_package[nginx-1.12.1-1.el7.ngx.x86_64.rpm] action install
+    [32m- install version 1:1.12.1-1.el7.ngx.x86_64 of package nginx-1.12.1-1.el7.ngx.x86_64.rpm[0m
+[0m  * service[nginx] action enable
+    [32m- enable service service[nginx][0m
+[0m  * service[nginx] action start
+    [32m- start service service[nginx][0m
+[0m  * directory[/var/www/html] action create
+    [32m- create new directory /var/www/html[0m
+[0m  * template[/var/www/html/index.html] action create
+    [32m- create new file /var/www/html/index.html[0m
+    [32m- update content in file /var/www/html/index.html from none to 83b81d[0m
+    [37m--- /var/www/html/index.html	2018-09-10 02:54:28.015994221 +0100[0m
+    [37m+++ /var/www/html/.chef-index20180910-12957-1tf5je6.html	2018-09-10 02:54:28.014994214 +0100[0m
+    [37m@@ -1 +1,10 @@[0m
+    [37m+<html>[0m
+    [37m+  <head>[0m
+    [37m+    <title>Data Bag</title>[0m
+    [37m+  </head>[0m
+    [37m+  <body>[0m
+    [37m+    <h1>Landing with data bag</h1>[0m
+    [37m+    <p>It works!</p>[0m
+    [37m+  </body>[0m
+    [37m+</html>[0m
+    [32m- change mode from '' to '0644'[0m
+[0m  * template[/etc/nginx/nginx.conf] action create
+    [32m- update content in file /etc/nginx/nginx.conf from 772e91 to e89b37[0m
+    [37m--- /etc/nginx/nginx.conf	2017-07-11 14:47:23.000000000 +0100[0m
+    [37m+++ /etc/nginx/.chef-nginx20180910-12957-1cstygf.conf	2018-09-10 02:54:28.021994258 +0100[0m
+    [37m@@ -1,33 +1,10 @@[0m
+    [37m-[0m
+    [37m-user  nginx;[0m
+    [37m-worker_processes  1;[0m
+    [37m-[0m
+    [37m-error_log  /var/log/nginx/error.log warn;[0m
+    [37m-pid        /var/run/nginx.pid;[0m
+    [37m-[0m
+    [37m-[0m
+    [37m-events {[0m
+    [37m-    worker_connections  1024;[0m
+    [37m-}[0m
+    [37m-[0m
+    [37m-[0m
+    [37m http {[0m
+    [37m-    include       /etc/nginx/mime.types;[0m
+    [37m-    default_type  application/octet-stream;[0m
+    [37m-[0m
+    [37m-    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '[0m
+    [37m-                      '$status $body_bytes_sent "$http_referer" '[0m
+    [37m-                      '"$http_user_agent" "$http_x_forwarded_for"';[0m
+    [37m-[0m
+    [37m-    access_log  /var/log/nginx/access.log  main;[0m
+    [37m-[0m
+    [37m-    sendfile        on;[0m
+    [37m-    #tcp_nopush     on;[0m
+    [37m-[0m
+    [37m-    keepalive_timeout  65;[0m
+    [37m-[0m
+    [37m-    #gzip  on;[0m
+    [37m-[0m
+    [37m-    include /etc/nginx/conf.d/*.conf;[0m
+    [37m+    server {[0m
+    [37m+        listen 80;[0m
+    [37m+        root html;[0m
+    [37m+        location / {[0m
+    [37m+            proxy_pass http://10.0.2.15:8080;[0m
+    [37m+        }[0m
+    [37m+    }[0m
+    [37m }[0m
+[0m  * service[nginx] action reload
+    [32m- reload service service[nginx][0m
+[0m[0m
+Running handlers:[0m
+Running handlers complete
+[0mChef Client finished, 8/8 resources updated in 16 seconds[0m

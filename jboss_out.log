@@ -1,0 +1,60 @@
+Starting Chef Client, version 14.4.56[0m
+resolving cookbooks for run list: ["java", "jboss"][0m
+Synchronizing Cookbooks:[0m
+  - java (0.1.0)[0m
+  - jboss (0.1.0)[0m
+Installing Cookbook Gems:[0m
+Compiling Cookbooks...[0m
+Converging 8 resources[0m
+Recipe: java::default[0m
+  * cookbook_file[/opt/jdk-6u45-linux-x64.bin] action create
+    [32m- create new file /opt/jdk-6u45-linux-x64.bin[0m
+    [32m- update content in file /opt/jdk-6u45-linux-x64.bin from none to 6b493a[0m
+    [37m(file sizes exceed 10000000 bytes, diff output suppressed)[0m
+[0m  * bash[installing java] action run
+    [32m- execute "bash"  "/tmp/chef-script20180910-13018-1cqsvhr"[0m
+[0m  * bash[setting up java] action run
+    [32m- execute "bash"  "/tmp/chef-script20180910-13018-15mg1w7"[0m
+[0mRecipe: jboss::default[0m
+  * yum_package[unzip] action install
+    [32m- install version 0:6.0-19.el7.x86_64 of package unzip[0m
+[0m  * cookbook_file[/opt/jboss-eap-5.1.2.zip] action create
+    [32m- create new file /opt/jboss-eap-5.1.2.zip[0m
+    [32m- update content in file /opt/jboss-eap-5.1.2.zip from none to 1c8615[0m
+    [37m(file sizes exceed 10000000 bytes, diff output suppressed)[0m
+[0m  * bash[installing jboss] action run
+    [32m- execute "bash"  "/tmp/chef-script20180910-13018-tw9pyo"[0m
+[0m  * systemd_unit[jboss.service] action create
+  Recipe: <Dynamically Defined Resource>[0m
+    * file[/etc/systemd/system/jboss.service] action create
+      [32m- create new file /etc/systemd/system/jboss.service[0m
+      [32m- update content in file /etc/systemd/system/jboss.service from none to b1ea6c[0m
+      [37m--- /etc/systemd/system/jboss.service	2018-09-10 02:52:50.234967779 +0100[0m
+      [37m+++ /etc/systemd/system/.chef-jboss20180910-13018-x323d3.service	2018-09-10 02:52:49.910964955 +0100[0m
+      [37m@@ -1 +1,10 @@[0m
+      [37m+  [Unit][0m
+      [37m+  Description=Jboss Application Server[0m
+      [37m+  After=network.target[0m
+      [37m+  [Service][0m
+      [37m+  Type=forking[0m
+      [37m+  User=root[0m
+      [37m+  ExecStart=/bin/bash -c "nohup /opt/jboss-eap-5.1/jboss-as/bin/run.sh -b 192.168.50.100 &"[0m
+      [37m+  [Install][0m
+      [37m+  WantedBy=multi-user.target[0m
+      [32m- change mode from '' to '0644'[0m
+      [32m- change owner from '' to 'root'[0m
+      [32m- change group from '' to 'root'[0m
+[0m    [32m- creating unit: jboss.service[0m
+[0mRecipe: jboss::default[0m
+  * systemd_unit[jboss.service] action enable
+    [32m- enabling unit: jboss.service[0m
+[0m  * systemd_unit[jboss.service] action start
+    [32m- starting unit: jboss.service[0m
+[0m  * cookbook_file[/opt/jboss-eap-5.1/jboss-as/server/default/deploy/SimpleWebApp.war] action create
+    [32m- create new file /opt/jboss-eap-5.1/jboss-as/server/default/deploy/SimpleWebApp.war[0m
+    [32m- update content in file /opt/jboss-eap-5.1/jboss-as/server/default/deploy/SimpleWebApp.war from none to 67e803[0m
+    [37m(new content is binary, diff output suppressed)[0m
+[0m[0m
+Running handlers:[0m
+Running handlers complete
+[0mChef Client finished, 11/11 resources updated in 01 minutes 17 seconds[0m
