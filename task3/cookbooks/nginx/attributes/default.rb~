@@ -1,0 +1,5 @@
+default['nginx']['version'] = '1.12.0'
+default['nginx']['port'] = '80'
+default['nginx']['url'] = "https://nginx.org/packages/centos/7/x86_64/RPMS/nginx-#{default['nginx']['version']}-1.el7.ngx.x86_64.rpm"
+default['nginx']['file'] = "nginx-#{default['nginx']['version']}-1.el7.ngx.x86_64.rpm"
+default['nginx']['data'] = lambda { data_bag_item('landing', 'simple') }

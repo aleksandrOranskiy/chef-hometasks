@@ -1,0 +1,76 @@
+resource_name :nginx_install
+
+property :version, String, default: node['nginx']['version']
+property :port, String, default: node['nginx']['port']
+property :url, String, default: node['nginx']['url']
+property :file, String, default: node['nginx']['file']
+property :ip, String, default: '192.168.50.100'
+property :content, DataBagItem
+
+default_action :install
+
+
+load_current_value do
+#  current_value_does_not_exist! if node['nginx']['version'].nil? || node['nginx']['port'].nil?
+#  if (new_resource.property_is_set?(:version) || new_resource.version != current_resource.version)
+#  version node['nginx']['version']
+#  end
+#  if (new_resource.property_is_set?(:port) || new_resource.port != current_resource.port)
+#  port node['nginx']['port']
+#  end
+#  puts node.run_state
+  content lazy { data_bag_item('landing', 'simple') }
+end
+
+action :install do
+#  converge_if_changed :version do
+    remote_file "/tmp/#{new_resource.file}" do
+      source new_resource.url
+      action :create
+    end
+    
+    package new_resource.file do
+      source "/tmp/#{new_resource.file}"
+      action :install
+    end
+
+    service "nginx" do
+      action [:enable, :start]
+    end
+
+    directory "/var/www/html" do
+      recursive true
+      action :create
+    end
+
+    template "/var/www/html/index.html" do   
+      source "index.html.erb"
+      mode "0644"
+      action :create
+      variables( ct: content )
+      notifies :reload, "service[nginx]"
+    end
+
+    template "/etc/nginx/nginx.conf" do   
+      source "nginx.conf.erb"
+      variables(
+        ip_address: new_resource.ip, #search(:node, 'roles:jboss')[0]["network"]["interfaces"]["enp0s8"]["addresses"].detect{|k,v| v[:family] == "inet" }.first,
+        port: new_resource.port,
+        app_dest: new_resource.url 
+      )
+      notifies :reload, "service[nginx]"
+    end
+#  end
+
+  converge_if_changed :port do
+    template "/etc/nginx/nginx.conf" do   
+      source "nginx.conf.erb"
+      variables(
+        ip_address: new_resource.ip, #search(:node, 'roles:jboss')[0]["network"]["interfaces"]["enp0s8"]["addresses"].detect{|k,v| v[:family] == "inet" }.first,
+        port: new_resource.port,
+        app_dest: new_resource.url 
+      )
+      notifies :reload, "service[nginx]"
+    end
+  end
+end

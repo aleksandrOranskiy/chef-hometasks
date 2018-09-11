@@ -1,0 +1,8 @@
+server {
+   listen <%= @port -%>;
+   server_name <%= @self_ip -%>;
+   root <%= @root -%>;
+   location / {
+       proxy_pass http://<%= @ip_address -%>:8080/SimpleWebApp/;
+   }
+}

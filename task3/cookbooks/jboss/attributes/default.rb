@@ -1,0 +1,5 @@
+default['jboss']['jboss_path'] = '/opt'
+default['jboss']['user'] = 'root'
+default['jboss']['ip'] = '192.168.50.100'
+default['jboss']['path'] = '/opt/jboss-eap-5.1/jboss-as/server/default/deploy/'
+default['jboss']['jboss_home'] = '/opt/jboss-eap-5.1/jboss-as/'
